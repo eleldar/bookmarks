@@ -36,22 +36,32 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig', # размещая приложение первым, гарантируем,
                                   # что именно его шаблоны будут использоваться по
                                   # умолчанию вместо шаблонов, объявленных в других приложениях
-
+                                  # Система аутентификации определяет следующие модели:
+                                  # 1. User – модель пользователя с основными полями:
+                                  # username, password, email, first_name, last_name и is_active;
+                                  # 2. Group – модель группы пользователей;
+                                  # 3. Permission – разрешение для пользователя или группы пользователей
+                                  # на выполнение определенных действий
+                                  # обработчики и формы
     # default apps
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',         # Система аутентификации; включен в список установленных приложений
+                                   # Система аутентификации определяет следующие модели:
+
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [  # Промежуточные слои;
+                # Промежуточный слой – это класс с методами, которые выполняются
+                # при обработке каждого запроса и формировании ответа
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',    # обрабатывает сессию запроса
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # связывает пользователей и запросы с помощью сессий
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
