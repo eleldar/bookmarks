@@ -2,6 +2,22 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def dashboard(request): # обработчик обернут в декоратор login_required.
+                        # Он проверяет, авторизован ли пользователь.
+                        # Если пользователь авторизован, Django выполняет обработку.
+                        # В противном случае пользователь перенаправляется на страницу логина
+                        # При этом в GET-параметре задается next -адрес запрашиваемой страницы.
+                        # Таким образом, после успешного прохождения авторизации пользователь
+                        # будет перенаправлен на страницу, куда он пытался попасть.
+                        # Именно для этих целей передавалось скрытое поле next в форму логина.
+    '''Обработчик для отображения рабочего стола,
+    который пользователь увидит при входе в свой аккаунт.'''
+    context = {'section': 'dashboard'} # добавили переменную контекста section, с помощью которой сможем узнать,
+                                       # какой раздел сайта сейчас просматривает пользователь
+    return render(request, 'account/dashboard.html', context=context)
 
 
 def user_login(request):

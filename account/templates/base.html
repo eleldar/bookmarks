@@ -1,3 +1,12 @@
+{# Добавим ссылки на вход и выход в базовый шаблон.                         #}
+{# Чтобы отображать нужную ссылку, следует определить, выполнил ли текущий пользователь вход#}
+{# в свой аккаунт или он является анонимным.                                #}
+{# Текущий пользователь задается в объекте HttpRequest промежуточным слоем. #}
+{# Для обращения используется request.user, чтобы получить объект типа User.#}
+{# Неавторизованный пользователь является объектом типа Anonymous User.     #}
+{# Чтобы определить, с каким типом пользователя мы имеем дело,              #}
+{# достаточ но обратиться к атрибуту is_authenticated.                      #}
+
 {% load static %}
 <html>
     <head>
@@ -7,6 +16,29 @@
     <body>
         <div id="header">
             <span class="logo">POST'o'GRAM</span>
+            {% if request.user.is_authenticated %} {# отображаем меню сайта только в том случае, если пользователь авторизован #}
+                <ul class="menu">
+                    <li {% if section == "dashboard" %}class="selected"{% endif %}>    {# проверяем текущий раздел, чтобы добавить CSS-класс selected #}
+                     <a href="{% url "dashboard" %}">Мой рабочий стол</a>              {# в соответствующий <li>-элемент для выделения цветом         #}
+                                                                                       {# раздел "Мой рабочий стол" выделен CSS-стилями, т.к. у него есть дополнительный класс selected #}
+                    </li>
+                    <li {% if section == "images" %}class="selected"{% endif %}>
+                     <a href="#">Изображения</a>
+                    </li>
+                    <li {% if section == "people" %}class="selected"{% endif %}>
+                     <a href="#">Люди</a>
+                    </li>
+                </ul>
+            {% endif %}
+
+            <span class="user">
+                {% if request.user.is_authenticated %} {# Если пользователь авторизован, мы отображаем его имя в шапке #}
+                    Здравствуйте{{ request.user.first_name }}.
+                    <a href="{% url 'logout' %}">Выход</a>
+                {% else %} {# В противном случае даем ссылку на страницу логина#}
+                    <a href="{% url 'login' %}">Вход</a>
+                {% endif %}
+            </span>
         </div>
         <div id="content">
             {% block content %}{% endblock %}
