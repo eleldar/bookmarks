@@ -24,4 +24,11 @@ urlpatterns = [
     # переход на обработчик выхода пользователя из-под его учетной записи
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', views.dashboard, name='dashboard'),
+    # шаблоны для доступа к обработчикам смены пароля
+    path('password_change/',
+         auth_views.PasswordChangeView.as_view(), # PasswordChangeView будет проверяет форму смены пароля
+         name='password_change'),
+    path('password_change/done/',
+         auth_views.PasswordChangeDoneView.as_view(), # PasswordChangeDoneView отображает сообщение о том, что операция выполнена успешно
+         name='password_change_done'),
 ]
