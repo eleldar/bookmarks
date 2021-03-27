@@ -33,7 +33,7 @@
 
             <span class="user">
                 {% if request.user.is_authenticated %} {# Если пользователь авторизован, мы отображаем его имя в шапке #}
-                    Здравствуйте{{ request.user.first_name }}.
+                    Здравствуйте {{ request.user.first_name }}
                     <a href="{% url 'logout' %}">Выход</a>
                 {% else %} {# В противном случае даем ссылку на страницу логина#}
                     <a href="{% url 'login' %}">Вход</a>
