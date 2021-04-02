@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
+from .models import Profile
 
 @login_required
 def dashboard(request): # обработчик обернут в декоратор login_required.
@@ -52,9 +53,29 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password']) # метод set_password() модели User сохранит пароль в зашифрованном виде
             # Сохраняем пользователя в БД
             new_user.save()
+            # Создание профиля пользователя
+            Profile.objects.create(user=new_user) # Когда пользователь регистрируется на сайте создается пустой профиль, ассоциированный с ним.
+                                                  # Для тех пользователей, которые были созданы ранее, необходимо вручную добавить объекты Profile
+                                                  # через сайт администрирования.
             context = {'new_user': new_user}
             return render(request, 'account/register_done.html', context=context)
     else:
         user_form = UserRegistrationForm()
     context = {'user_form': user_form}
     return render(request, 'account/register.html', context=context)
+
+@login_required # обернули функцию в декоратор login_required, потому что для изменения профиля пользователь должен быть авторизован
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST) # форма для базовых сведений о пользователе
+        profile_form = ProfileEditForm(instance=request.user.profile,      # форма для дополнительной, расширенной информации
+                                       data=request.POST,
+                                       files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid(): # для проверки вызываем метод is_valid() каждой из форм
+            user_form.save()                                 # Если обе формы заполнены корректно, сохраняем их с помощью метода save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    context = {'user_form': user_form, 'profile_form': profile_form}
+    return render(request, 'account/edit.html', context=context)

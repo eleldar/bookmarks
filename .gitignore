@@ -4,3 +4,4 @@ __pycache__
 admin_password.txt
 .idea
 local_settings.py
+media/

@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
 ]
+
+if settings.DEBUG: # сервер разработки Django будет возвращать медиафайлы при обращении к ним по URL
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Функция static() подходит только для локальной разработки,
+                                                                                 # но не для применения на боевых серверах.
+                                                                                 # Нельзя использовать Django в качестве поставщика статических и медиафайлов

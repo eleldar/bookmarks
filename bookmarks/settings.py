@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import local_settings
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,8 +142,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # login/logout settings
-LOGIN_REDIRECT_URL = 'dashboard' # указывает адрес, куда Django будет перенаправлять
-                                 # пользователя при успешной авторизации,
+LOGIN_REDIRECT_URL = 'dashboard' # указывает адрес, куда Django будет перенаправлять пользователя при успешной авторизации,
                                  # если не указан GET-параметр next
 LOGIN_URL = 'login'   # адрес, куда нужно перенаправлять пользователя для входа в систему,
                       # например из обработчиков с декоратором login_required
@@ -153,3 +153,7 @@ LOGOUT_URL = 'logout' # адрес, перейдя по которому, пол
 # Для этих целей Django предоставляет специальный бэкэнд, который необходимо подключить EMAIL_BACKEND;
 # определяет класс, который будет использоваться для отправки электронной почты
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MEDIA_URL = '/media/'                         # MEDIA_URL – это базовый URL, от которого будут формироваться адреса файлов
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') # MEDIA_ROOT – путь в файловой системе, где эти файлы будут храниться;
+                                              # используем BASE_DIR, чтобы наш код был универсальным, т.к. неизвестен путь в явном виде
