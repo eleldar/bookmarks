@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from django.contrib import messages
 
 @login_required
 def dashboard(request): # обработчик обернут в декоратор login_required.
@@ -74,6 +75,9 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid(): # для проверки вызываем метод is_valid() каждой из форм
             user_form.save()                                 # Если обе формы заполнены корректно, сохраняем их с помощью метода save()
             profile_form.save()
+            messages.success(request, 'Профиль успешно обновлен') # уведомление об успешном изменении данных профиля; используется модуль messages
+        else:
+            messages.error(request, 'Ошибка обновления профиля') # уведомление об ошибке при изменении данных профиля; используется модуль messages
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)

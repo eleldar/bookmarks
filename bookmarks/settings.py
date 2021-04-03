@@ -55,7 +55,10 @@ INSTALLED_APPS = [
 
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages',     # встроена система сообщений, которая позволяет отображать одноразовые уведомления;
+                                   # cистема сообщений предоставляет простой механизм отправлять уведомления пользователям
+                                   # (по умолчанию они хранятся в cookie и отображаются при последующем запросе пользователя);
+                                   # система сообщений добавляется по умолчанию, если проект был создан с помощью команды python manage.py startproject
     'django.contrib.staticfiles',
 ]
 
@@ -67,7 +70,7 @@ MIDDLEWARE = [  # Промежуточные слои;
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware', # связывает пользователей и запросы с помощью сессий
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',    # промежуточный слой для системы сообщений, которая позволяет отображать одноразовые уведомления
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -79,11 +82,12 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
+            'context_processors': [ # контекстные процессоры, которые передают сведения в HTML
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages', # добавляет переменную message;
+                                                                       # может быть использована в шаблонах для отображения всех существующих уведомлений
             ],
         },
     },
@@ -149,7 +153,7 @@ LOGIN_URL = 'login'   # адрес, куда нужно перенаправля
 LOGOUT_URL = 'logout' # адрес, перейдя по которому, пользователь выйдет из своего аккаунта
 
 
-# во время разработки и тестирования достаточно настроить Django на отправку сообщений в консоль вместо использования SMTP-сервера. 
+# во время разработки и тестирования достаточно настроить Django на отправку сообщений в консоль вместо использования SMTP-сервера.
 # Для этих целей Django предоставляет специальный бэкэнд, который необходимо подключить EMAIL_BACKEND;
 # определяет класс, который будет использоваться для отправки электронной почты
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -157,3 +161,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 MEDIA_URL = '/media/'                         # MEDIA_URL – это базовый URL, от которого будут формироваться адреса файлов
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') # MEDIA_ROOT – путь в файловой системе, где эти файлы будут храниться;
                                               # используем BASE_DIR, чтобы наш код был универсальным, т.к. неизвестен путь в явном виде
+
+# Несколько методов аутенификации пользователя.
+'''Django будет использовать бэкэнды по порядку, поэтому теперь пользователь сможет аутентифицироваться и с помощью электронной почты.
+Идентификационные данные сначала будут проверены ModelBackend. Если этот бэкэнд не вернет объект пользователя, Django попробует аутентифицировать его
+с помощью собственного класса, EmailAuthBackend.
+Порядок, в котором бэкэнды указаны в настройке AUTHENTICATION_BACKENDS, имеет значение!
+Если одни и те же идентификационные данные окажутся корректными для нескольких бэкэндов, Django остановит проверку, как только первый из них вернет объект
+пользователя.'''
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', # основной бэкэнд ModelBackend, который использует логин и пароль пользователя в качестве идентификационных данных
+    'account.authentication.EmailAuthBackend',   # обственный бэкэнд, который проверяет e-mail вместо логина
+]
