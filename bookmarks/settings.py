@@ -27,7 +27,13 @@ SECRET_KEY = local_settings.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+'''Django проверяет домены, перечисленные в настройке ALLOWED_HOSTS.
+Это мера предосторожности для предотвращения атак подмены HTTP-заголовков.
+Django разрешает использовать только те домены, которые указаны в ALLOWED_HOSTS'''
+# явно задали localhost и 127.0.0.1, чтобы иметь возможность обращаться к сайту
+# через localhost, который используется Django по умолчанию при настройке DEBUG,
+# равной True, и пустом списке ALLOWED_HOSTS
+ALLOWED_HOSTS = ['post-o-gram.ru', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -44,6 +50,10 @@ INSTALLED_APPS = [
                                   # 3. Permission – разрешение для пользователя или группы пользователей
                                   # на выполнение определенных действий
                                   # обработчики и формы
+
+    # Python-приложение, которое дает возможность пользователям использовать аккаунты сторонних соцсетей для входа на сайт
+    'social_django',
+
     # default apps
     'django.contrib.admin',        # включает несколько шаблонов системы аутентификации,
                                    # которые используются для сайта администрирования;
