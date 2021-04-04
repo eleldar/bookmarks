@@ -181,5 +181,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') # MEDIA_ROOT – путь в фа�
 пользователя.'''
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', # основной бэкэнд ModelBackend, который использует логин и пароль пользователя в качестве идентификационных данных
-    'account.authentication.EmailAuthBackend',   # обственный бэкэнд, который проверяет e-mail вместо логина
+    'account.authentication.EmailAuthBackend',   # cобственный бэкэнд, который проверяет e-mail вместо логина
+    'social_core.backends.facebook.FacebookOAuth2', # facebook
 ]
+
+SOCIAL_AUTH_FACEBOOK_KEY = local_settings.SOCIAL_AUTH_FACEBOOK_KEY
+SOCIAL_AUTH_FACEBOOK_SECRET = local_settings.SOCIAL_AUTH_FACEBOOK_SECRET
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email'] # укажем данные, которые хотим запрашивать из Facebook-аккаунта

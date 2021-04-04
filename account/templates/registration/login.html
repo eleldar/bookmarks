@@ -28,4 +28,9 @@
         </form>
         <p><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
     </div>
+    <div class="social">
+      <ul>
+        <li class="facebook"><a href="{% url "social:begin" "facebook" %}">Вход с помощью Facebook</a></li>
+      </ul>
+    </div>
 {% endblock %}
