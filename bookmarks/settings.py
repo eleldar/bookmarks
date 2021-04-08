@@ -183,8 +183,17 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', # основной бэкэнд ModelBackend, который использует логин и пароль пользователя в качестве идентификационных данных
     'account.authentication.EmailAuthBackend',   # cобственный бэкэнд, который проверяет e-mail вместо логина
     'social_core.backends.facebook.FacebookOAuth2', # facebook
+    'social_core.backends.twitter.TwitterOAuth',    # twitter; нет одобрения на сайте Twitter
+    'social_core.backends.google.GoogleOAuth2',     # google
 ]
 
 SOCIAL_AUTH_FACEBOOK_KEY = local_settings.SOCIAL_AUTH_FACEBOOK_KEY
 SOCIAL_AUTH_FACEBOOK_SECRET = local_settings.SOCIAL_AUTH_FACEBOOK_SECRET
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email'] # укажем данные, которые хотим запрашивать из Facebook-аккаунта
+
+SOCIAL_AUTH_TWITTER_KEY = local_settings.SOCIAL_AUTH_TWITTER_KEY
+SOCIAL_AUTH_TWITTER_SECRET = local_settings.SOCIAL_AUTH_TWITTER_SECRET
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = local_settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = local_settings.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
+
