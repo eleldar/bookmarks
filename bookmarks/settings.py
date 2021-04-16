@@ -33,7 +33,10 @@ Django разрешает использовать только те домен�
 # явно задали localhost и 127.0.0.1, чтобы иметь возможность обращаться к сайту
 # через localhost, который используется Django по умолчанию при настройке DEBUG,
 # равной True, и пустом списке ALLOWED_HOSTS
-ALLOWED_HOSTS = ['post-o-gram.ru', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['post-o-gram.ru',
+                 'localhost',
+                 '127.0.0.1',
+                 '752d3d1d8766.ngrok.io']
 
 
 # Application definition
@@ -198,4 +201,3 @@ SOCIAL_AUTH_TWITTER_SECRET = local_settings.SOCIAL_AUTH_TWITTER_SECRET
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = local_settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = local_settings.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
-

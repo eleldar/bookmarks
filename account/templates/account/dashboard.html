@@ -4,7 +4,17 @@
 
 {% block content %}
     <h1>Рабочий стол</h1>
-    <p>Добро пожаловать на Ваш рабочий стол.<br/>
+
+    {% with total_images_created=request.user.images_created.count %}
+      <p>Добро пожаловать на Ваш рабочий стол.<br/>
+       Избранных изображений: {{ total_images_created }}.</p>
+    {% endwith %}
+
+    <p>Перетащите следующую кнопку на панель закладок, чтобы добавить 
+       изображения с других веб-сайтов в закладки.
+       <a href="javascript:{% include "bookmarklet_launcher.js" %}" class="button">Изображения</a>
+    </p>
+    <p>
        Вы можете <a href="{% url "edit" %}">настроить свой профиль</a> или
        <a href="{% url "password_change" %}">изменить пароль</a>.
     </p>

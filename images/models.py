@@ -37,3 +37,7 @@ class Image(models.Model):
         if not self.slug:  # при отсутствии слага
             self.slug = slugify(self.title) # функция slugify() автоматически формирует его из переданного заголовка
         super(Image, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        '''задания канонического URL’а'''
+        return reverse('images:detail', args=[self.id, self.slug])

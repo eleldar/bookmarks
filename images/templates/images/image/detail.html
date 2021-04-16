@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title  %}{{image.title}}{% endblock %}
+
+{% block content %}
+  <h1>{{image.title}}</h1>
+  <img src="{{ image.image.url }}" class="image-detail">
+  {% with total_likes=image.users_like.count %} {# используем тег with, для того чтобы сохранить в переменную total_likes результат выполнения QuerySet’а, вычисляющего количество лайков текущей картинки; так избегаем выполнения этого запроса дважды #}
+    <div class="image-info">
+      <div>
+        <span class="count">Понравилось: {{ total_likes }}</span> 
+      </div>
+      {{ image.description|linebreaks}}  {# отображаем описание изображения #}
+    </div>
+    <div class="image-likes">
+      {% for user in image.users_like.all %} {# проходим по списку image.users_like.all для отображения списка пользователей, которым понравилась текущая картинка #}
+        <div>
+          <img src="{{ user.profile.photo.url }}"
+          <p>{{ user.first_name }}</p>
+        </div>
+      {% empty %}
+        Еще никому не понравилась это изображение!
+      {% endfor %}
+    </div>
+  {% endwith %}
+{% endblock %}
