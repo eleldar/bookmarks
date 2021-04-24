@@ -4,7 +4,13 @@
 
 {% block content %}
   <h1>{{image.title}}</h1>
-  <img src="{{ image.image.url }}" class="image-detail">
+  {% load thumbnail %}  
+  {% thumbnail image.image "300" as im %} {# создаем превью с фиксированным размером 300 пикселей. Когда пользователь первый раз загрузит эту страницу, создастся превью. #}
+    <a href="{{ image.image.url }}">      {# Оно же будет использоваться при всех последующих обращениях к странице. #}
+      <img src="{{ im.url }}" class="image-detail">
+    </a>
+  {% endthumbnail %}
+
   {% with total_likes=image.users_like.count %} {# используем тег with, для того чтобы сохранить в переменную total_likes результат выполнения QuerySet’а, вычисляющего количество лайков текущей картинки; так избегаем выполнения этого запроса дважды #}
     <div class="image-info">
       <div>
