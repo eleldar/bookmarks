@@ -5,7 +5,7 @@
   else {
   document.body.appendChild(
     document.createElement('script')
-  ).src='https://752d3d1d8766.ngrok.io/static/js/bookmarklet.js?r=' +
+  ).src='https://c4b4a5bba490.ngrok.io/static/js/bookmarklet.js?r=' +
     Math.floor(Math.random()*99999999999999999999);
   }
 })();

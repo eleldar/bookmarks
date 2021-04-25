@@ -53,5 +53,24 @@
         <div id="content">
             {% block content %}{% endblock %}
         </div>
+    <script src="/static/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script> {# подключает плагин JSCookie из публичного CDN; облегчает работу с куками #}
+    <script>
+      var csrftoken = Cookies.get('csrftoken');    {# получаем значение csrftoken с помощью Cookies.get() #}
+      function csrfSafeMethod(method) {            {# функция csrfSafeMethod(), которая определяет, нужно ли проверять CSRF-токен для текущего HTTP-метода. Методы, которые не требуют проверки, – GET, HEAD, OPTIONS, TRACE #}
+        // Для следующих методов токен не будет подставляться в заголовок
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      $.ajaxSetup({                        {# настройка AJAX-запросов методом $.ajaxSetup(); gеред отправкой каждого AJAX-запроса проверяет, нужно ли выставлять CSRF-токен. Если нужно, то задает в заголовке X-CSRFToken запроса значение токена, полученное из куков; CSRF-токен будет добавляться в заголовки запросов методами POST и PUT #}
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+      $(document).ready(function(){        {# будет выполняться функция после загрузки страницы #}
+        {% block domready %}{% endblock %} {# блочный тег Django domready смогут полуить дочерние шаблоны, чтобы добавлять собственный JavaScript-код, который должен выполняться после формирования DOM #}
+      });
+    </script>
     </body>
 </html>

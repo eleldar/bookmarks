@@ -2,7 +2,7 @@
 Он отслеживает, была ли загружена jQuery на текущем сайте, и, если не была, загружает ее.
 Если библиотека уже была подключена, код выполняет функцию bookmarklet() */
 (function(){
-  var site_url = 'https://752d3d1d8766.ngrok.io/'; // URL сайта
+  var site_url = 'https://c4b4a5bba490.ngrok.io/'; // URL сайта
   var static_url = site_url + 'static/';           // URL статических файлов
   var min_width = 100;  // минимальные ширина и высота в пикселях для картинок,
   var min_height = 100; // которые будет загружать букмарклет

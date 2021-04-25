@@ -36,7 +36,7 @@ Django разрешает использовать только те домен�
 ALLOWED_HOSTS = ['post-o-gram.ru',
                  'localhost',
                  '127.0.0.1',
-                 '752d3d1d8766.ngrok.io']
+                 'c4b4a5bba490.ngrok.io']
 
 
 # Application definition
