@@ -1,0 +1,33 @@
+{% extends "base.html" %}                            {# наследуется от base.html #}
+
+{% block title %}Избранные изображения{% endblock %}
+
+{% block content %}
+  <h1>Избранные изображения</h1>
+  <div id="image-list">
+    {% include "images/image/list_ajax.html" %}      {# подключили к этому шаблону список картинок из list_ajax.html #}
+  </div>
+{% endblock %}
+
+{% block domready %}  {# код JavaScript для загрузки страниц списка #}
+  /* блок переменных */
+  var page = 1;              {# текущая страница #}
+  var empty_page = false;    {# является ли последняя полученная страница пустой #}
+  var block_request = false; {# блокирует отправку запросов, если уже есть выполняемый запрос #}
+
+  /* выполняться при прокручивании страницы, с помощью скролинга */
+  $(window).scroll(function() {
+    var margin = $(document).height() - $(window).height() - 200; {# Вычисляет разницу между высотой всей страницы и высотой видимой части #}
+    if ($(window).scrollTop() > margin && empty_page == false && block_request == false) {  {# проверяем, не является ли последней текущая показанная страница и не был ли послан другой запрос #}
+      block_request = true; {# выставляем переменную block_request в true, чтобы избежать дополнительных запросов  #}
+      page += 1;            {# увеличивает счетчик страниц #}
+      $.get('?page=' + page, function(data) {  {# GET-запрос с помощью $.get() для получения фрагмента HTML в переменную data #}
+        if(data == '') {empty_page = true;} {# ответ не содержит данных, следовательно, мы получили пустой список (достигли конца списка). Выставляем переменную empty_page в true и больше не обращаемся к серверу при прокрутке #}
+        else {                              {# ответ содержит данные; добавляем полученные данные в конец списка – HTML-элемента с идентификатором image-list  #}
+          block_request = false;
+          $('#image-list').append(data);
+        }
+      });
+    }
+  });
+{% endblock %}

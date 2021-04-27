@@ -23,7 +23,7 @@
                                                                                        {# раздел "Мой рабочий стол" выделен CSS-стилями, т.к. у него есть дополнительный класс selected #}
                     </li>
                     <li {% if section == "images" %}class="selected"{% endif %}>
-                     <a href="#">Изображения</a>
+                     <a href="{% url "images:list" %}">Изображения</a>
                     </li>
                     <li {% if section == "people" %}class="selected"{% endif %}>
                      <a href="#">Люди</a>
