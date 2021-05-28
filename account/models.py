@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
+
 
 class Profile(models.Model):
     '''собственная модель профиля пользователя'''
@@ -21,4 +23,27 @@ class Profile(models.Model):
     def __str__(self):
         return f'Профиль для пользователя {self.user.username}'
 
-# Create your models here.
+class Contact(models.Model):
+    '''Модель для связи с пользователем'''
+    user_from = models.ForeignKey('auth.User', # первичный ключ пользователя-подписчика
+                                  related_name='rel_from_set',
+                                  on_delete=models.CASCADE)
+    user_to = models.ForeignKey('auth.User', # первичный ключ пользователя-источника
+                                 related_name='rel_to_set',
+                                 on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, # время создания связи
+                                   db_index=True) # индекс по полю created; может ускорить запросы с фильтрацией и сортировкой по нему
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return f'{self.user_form} подписан на {self.user_to}'
+
+
+User.add_to_class('following', # метод add_to_class() динамически добавляет атрибут в модель инфраструктуры Django: User
+                  models.ManyToManyField(
+                      'self',
+                      through=Contact, # добавили промежуточную модель Contact и создали из нее таблицу для связи между пользователями
+                      related_name='followers',
+                      symmetrical=False) # в явном виде задаем несимметричные отношения, поскольку по умолчанию - симметричные
+                 )
