@@ -202,3 +202,6 @@ ABSOLUTE_URL_OVERRIDES = {
         'user_detail',
         args=[u.username])
 }
+
+# При проблемах с формированием превью картинок
+# THUMBNAIL_DEBUG = True

@@ -6,3 +6,4 @@ admin_password.txt
 local_settings.py
 media/
 twitter_hack.txt
+run.sh

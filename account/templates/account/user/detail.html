@@ -1,0 +1,34 @@
+{# Это шаблон подробностей о пользователе. #}
+
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ user.get_full_name }}</h1>
+  {# отображаем профиль и используем тег {% thumbnail %} для аватара #}
+  <div class="profile-info"> 
+    {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
+      <img src="{{ im.url }}" class="user-detail">
+    {% endthumbnail %}
+  </div>
+  {# показываем количество подписчиков и ссылку, для того чтобы подписаться или отписаться от пользователя #}
+  {% with total_followers=user.followers.count %}
+    <span class="count">
+      <span class="total">подписчиков:{{ total_followers }}</span>
+    </span>
+    {# атрибуты data-id и data-action, которые содержат ID открытого профиля и действие follow или unfollow, доступное текущему пользователю #}
+    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+      {% if request.user not in user.followers.all %}
+        Подписаться
+      {% else %}
+        Отписаться
+      {% endif %}
+    </a>
+    {# картинки, которые пользователь добавил в закладки; используется шаблон images/image/list_ajax.html. #}
+   <div id="image-list" class="image-container">
+   {% include "images/image/list_ajax.html" with images=user.images_created.all %}
+   </div>
+  {% endwith %}
+{% endblock %}
